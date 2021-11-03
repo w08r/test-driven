@@ -1,0 +1,38 @@
+@startuml "c4-l0-request-coffee-0"
+!include c4lib/C4_Container.puml
+LAYOUT_TOP_DOWN()
+LAYOUT_AS_SKETCH()
+''LAYOUT_WITH_LEGEND()
+
+Person(worker, "Thirsty Worker", "Needs coffee to function.")
+Person(family, "Resourceful Family Member", "Likes to take advantage of kettle being switched on.")
+Lay_L(family, worker)
+
+System(iam, "Identity and Access", "Allows folks needing a drink to identify themselves and assert they have permission to make a drink.  If they are a child, they have a hot-chocolate quota which must not be exceeded.")
+Rel(worker, iam, "Authenticate", "[https]", "A token will be returned authenticating the user.")
+Rel(family, iam, "Authenticate", "[https]", "A token will be returned authenticating the user.")
+System(cm, "HotDrinkMaker", "Allows workers to order fresh coffee on demand.  Manages supplies of raw materials.  Invokes delivery coffee to appropriate location.  Can make other hot drinks if necessary.")
+Rel(cm, iam, "Verify", "[https]", "Verifies the token supplied is valid.")
+
+System(d, "Delivery", "Place fresh hot drink on the correct coaster based on consumer location.")
+Rel_U(d, worker, "delivers to", "[async message]")
+Rel_U(d, family, "delivers to", "[async message]")
+
+System(p, "Purchasing", "Order supplies such as green coffee beans from suppliers, such as amazon")
+
+Lay_L(iam, p)
+Lay_L(p, d)
+
+Rel(worker, cm, "Sends coffee request", "[https]", "Coffee will be delivered asynchronously when ready.")
+Rel(family, cm, "Makes additional request(s)", "[https]", "Drink will be delivered asynchronously when ready.")
+Rel(cm, p, "Notifies purchasing system to obtain supplies", "[https]")
+Rel_U(p, cm, "Provides new inventory", "[async message]")
+Rel(cm, d, "Delivers coffee using", "[async message]")
+System_Ext(amazon, "Amazon", "Supplier of green coffee beans")
+System_Ext(tesco, "Tesco", "Supplier of tea bags and milk")
+Rel(p, amazon, "Orders supplies", "[async message]")
+Rel(p, tesco, "Orders supplies", "[async message]")
+Rel(amazon, cm, "Provides supplies", "[async message]")
+Rel(tesco, cm, "Provides supplies", "[async message]")
+
+@enduml
