@@ -5,7 +5,7 @@ morning coffee making ritual.
 
 The overall system being modelled is shown below.
 
-![overview](./svg/c4-l0-request-coffee-0.svg "The coffee making system")
+![overview](./arch/svg/c4-l0-request-coffee-0.svg "The coffee making system")
 
 - The systems in blue denote the core domain and separate sub domains
   modelled in this project.
@@ -29,3 +29,15 @@ memeber will start the drink making process and supply the
 ThirstyWorker with coffee.  Children are only allowed a certain number
 of hot-chocolates a day and this must be enforeced by the business
 logic.
+
+## Architecture
+
+The architecture of the coffee making system is described [here](./arch/ARCHITECTURE.md)
+
+## Starting the system
+
+TODO
+
+## Running the simulation
+
+TODO

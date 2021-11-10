@@ -1,0 +1,17 @@
+@startuml
+
+interface "Messaging" as m1
+interface "Messaging" as m2
+interface "HTTP" as h1
+
+[HotDrinksMaker] ..> m1 : publish
+[HotDrinksMaker] ..> m2 : publish (Customer)
+[Delivery] --> m1 : consume
+[Purchasing] --> m2 : consume (Supplier)
+note left of Purchasing : Effectively external system providing\npurchasing of raw materials needed
+[HotDrinksMaker] ..> h1 : use
+[IAM] --> h1 : Open Host Service
+
+@enduml
+
+
